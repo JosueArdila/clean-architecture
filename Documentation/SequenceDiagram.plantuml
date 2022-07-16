@@ -1,0 +1,47 @@
+@startuml
+skinparam style strictuml
+
+actor "veterinarian" as v
+boundary UI
+control RouterTest as RT
+participant Handler as H
+participant useCaseCall as UC
+participant PetRepository as R
+database DB
+
+v -> UI: createPet
+activate UI
+
+UI -> RT: to create pet
+RT --> H : routerFunction()
+H --> UC: listenPOSTCreatePetUseCase()
+UC --> R: execute()
+R --> DB: save()
+DB --> R: PetDocument saved
+R --> UC: Mono<Pet> pet
+UC --> H: Mono<Pet> pet
+H --> RT: Mono<ServerResponse> Status 201\n body(Mono<Pet> pet)
+RT --> UI: Pet saved
+
+deactivate UI
+
+|||
+|||
+
+v -> UI: List all existing pets
+activate UI
+
+UI -> RT: to list pets
+RT --> H : routerFunction()
+H --> UC: listenGETFindAllPetUseCase()
+UC --> R: execute()
+R --> DB: findAll()
+DB --> R: PetDocument list
+R --> UC: Flux<Pet> pets
+UC --> H: Flux<Pet> pets
+H --> RT: Mono<ServerResponse> Status 200\n body(Flux<Pet> pets)
+RT --> UI: pet list
+
+deactivate UI
+
+@enduml

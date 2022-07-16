@@ -1,0 +1,25 @@
+@startuml
+left to right direction
+skinparam actorStyle Hollow
+
+skinparam usecase {
+BackgroundColor DarkSeaGreen
+BorderColor DarkSlateGray
+}
+
+actor "veterinary" as v
+
+package veterinaryHospital {
+    usecase "Create pet" as CP
+    usecase "Delete pet" as DP
+    usecase "Find all pet" as FAP
+    usecase "Find by id pet" as FIP
+    usecase "Update pet" as UP
+}
+
+v --> CP
+v --> DP
+v --> FAP
+v --> FIP
+v --> UP
+@enduml
